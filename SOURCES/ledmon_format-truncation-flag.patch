@@ -1,0 +1,26 @@
+From a82b0e4080254e68eb70a338f8f6f7e6a6dbc581 Mon Sep 17 00:00:00 2001
+From: Jan Macku <jamacku@redhat.com>
+Date: Tue, 2 Feb 2021 11:08:20 +0100
+Subject: [PATCH] ledmon_format-truncation-flag
+
+suggested by kdudka
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 8fd5e6b..b80e2b0 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -22,7 +22,7 @@ AM_CPPFLAGS='-D_DEBUG -D_GNU_SOURCE -D_DEFAULT_SOURCE -DDMALLOC_DISABLE -DBUILD_
+ AC_DEFUN([AX_AM_CFLAGS_ADD],[AX_CHECK_COMPILE_FLAG($1, AM_CFLAGS="$AM_CFLAGS $1")])
+ AX_AM_CFLAGS_ADD([-Wformat -Werror=format-security])
+ AX_AM_CFLAGS_ADD([-Werror=format-overflow=2])
+-AX_AM_CFLAGS_ADD([-Werror=format-truncation=1])
++dnl AX_AM_CFLAGS_ADD([-Werror=format-truncation=1])
+ AX_AM_CFLAGS_ADD([-Werror=shift-negative-value])
+ AX_AM_CFLAGS_ADD([-Werror=alloca])
+ AX_AM_CFLAGS_ADD([-Werror=missing-field-initializers])
+-- 
+2.29.2
+
