@@ -1,13 +1,11 @@
 Summary: Enclosure LED Utilities
 Name: ledmon
-Version: 0.96
-Release: 3%{?dist}
+Version: 0.97
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://github.com/intel/ledmon
 Source0: https://github.com/intel/ledmon/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
-
-Patch0: ipmi-avoid-error-messages-on-non-dell-platforms.patch
 
 BuildRequires: perl-interpreter perl-podlators
 BuildRequires: sg3_utils-devel
@@ -30,7 +28,6 @@ use this application.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 # can't use smp_flags because -j4 makes the build fail
@@ -59,6 +56,10 @@ make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT SBIN_DIR=$RPM_BUI
 %{_unitdir}/ledmon.service
 
 %changelog
+* Wed May 17 2023 Jan Macku <jamacku@redhat.com> - 0.97-1
+- update to 0.97 (#2159588)
+- drop downstream patch - ipmi: avoid error messages on non-dell platforms
+
 * Tue Nov 29 2022 Jan Macku <jamacku@redhat.com> - 0.96-3
 - Decrease log level of IPMI messages (#2148944)
 
