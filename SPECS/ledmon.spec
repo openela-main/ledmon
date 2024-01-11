@@ -1,13 +1,12 @@
 Summary: Enclosure LED Utilities
 Name: ledmon
-Version: 0.96
-Release: 5%{?dist}
+Version: 0.97
+Release: 1%{?dist}
 License: GPLv2+
 URL: https://github.com/intel/ledmon
 Source0: https://github.com/intel/ledmon/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 Patch0: ledmon_format-truncation-flag.patch
-Patch1: ipmi-avoid-error-messages-on-non-dell-platforms.patch
 
 BuildRequires: sg3_utils-devel
 BuildRequires: pciutils-devel
@@ -32,7 +31,6 @@ use this application.
 %setup -q
 # remove -Werror=format-truncation=1 in order to build package 
 %patch0 -p1
-%patch1 -p1
 autoreconf -fiv
 
 %build
@@ -60,6 +58,10 @@ make
 %{_unitdir}/ledmon.service
 
 %changelog
+* Wed May 17 2023 Jan Macku <jamacku@redhat.com> - 0.97-1
+- update to 0.97 (#2159926)
+- drop ipmi-avoid-error-messages-on-non-dell-platforms.patch
+
 * Mon Nov 28 2022 Jan Macku <jamacku@redhat.com> - 0.96-5
 - Decrease log level of IPMI messages (#2148954)
 
