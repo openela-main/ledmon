@@ -1,17 +1,20 @@
 Summary: Enclosure LED Utilities
 Name: ledmon
-Version: 0.97
+Version: 1.0.0
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://github.com/intel/ledmon
-Source0: https://github.com/intel/ledmon/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-Patch0: ledmon_format-truncation-flag.patch
-
-BuildRequires: sg3_utils-devel
-BuildRequires: pciutils-devel
 BuildRequires: autoconf automake
+BuildRequires: autoconf-archive
 BuildRequires: gcc make
+BuildRequires: libconfig-devel
+BuildRequires: libtool
+BuildRequires: pciutils-devel
+BuildRequires: sg3_utils-devel
+# Needed for pkgconfig usage.
+BuildRequires: pkgconfig(systemd)
 # Needed for the udev dependency.
 BuildRequires: systemd-devel
 BuildRequires: systemd-rpm-macros
@@ -27,19 +30,38 @@ types of system: 2-LED system (Activity LED, Status LED) and 3-LED system
 (Activity LED, Locate LED, Fail LED). User must have root privileges to
 use this application.
 
+%package        libs
+Summary:        Runtime library files for %{name}
+Requires:       pciutils-libs
+Requires:       sg3_utils-libs
+
+%description    libs
+The %{name}-libs package contains runtime libraries for applications
+that use %{name}.
+
+%package        devel
+Summary:        Development files for %{name}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+Requires:       pciutils-devel
+Requires:       sg3_utils-devel
+
+%description    devel
+The %{name}-devel package contains libraries and header files for
+developing applications that use %{name}.
+
 %prep
 %setup -q
-# remove -Werror=format-truncation=1 in order to build package 
-%patch0 -p1
 autoreconf -fiv
 
 %build
-sh autogen.sh
-%configure --enable-systemd=yes
-make
+%configure --enable-systemd=yes --enable-library --disable-static
+%make_build
 
 %install
 %make_install SBIN_DIR=$RPM_BUILD_ROOT/%{_sbindir} MANDIR=$RPM_BUILD_ROOT%{_mandir}
+
+# These files are not useful for install
+find %{buildroot} -name '*.la' -delete
 
 %post
 %systemd_post ledmon.service
@@ -57,7 +79,19 @@ make
 %{_mandir}/*/*
 %{_unitdir}/ledmon.service
 
+%files libs
+%{_libdir}/*.so.*
+
+%files devel
+%{_includedir}/*
+%{_libdir}/*.so
+%{_libdir}/pkgconfig/%{name}.pc
+
 %changelog
+* Fri Apr 12 2024 Jan Macku <jamacku@redhat.com> - 1.0.0-1
+- update to 1.0.0
+- package shared ledmon library by Tony Asleson
+
 * Wed May 17 2023 Jan Macku <jamacku@redhat.com> - 0.97-1
 - update to 0.97 (#2159926)
 - drop ipmi-avoid-error-messages-on-non-dell-platforms.patch
