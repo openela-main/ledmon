@@ -1,10 +1,12 @@
 Summary: Enclosure LED Utilities
 Name: ledmon
 Version: 1.1.0
-Release: 1%{?dist}
+Release: 2%{?dist}.1
 License: GPLv2+
 URL: https://github.com/intel/ledmon
 Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+
+Patch:   0001-ledmon-1.1.0-utils-fix-string2ibpi-function.patch
 
 BuildRequires: autoconf automake
 BuildRequires: autoconf-archive
@@ -50,7 +52,7 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%setup -q
+%autosetup -p1
 autoreconf -fiv
 
 %build
@@ -88,6 +90,9 @@ find %{buildroot} -name '*.la' -delete
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Mon Jun 09 2025 Jan Macku <jamacku@redhat.com> - 1.1.0-2.1
+- Fix string2ibpi function (RHEL-104907)
+
 * Tue Nov 12 2024 Jan Macku <jamacku@redhat.com> - 1.1.0-1
 - update to 1.1.0
 
