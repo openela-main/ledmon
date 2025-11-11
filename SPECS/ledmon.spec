@@ -1,7 +1,7 @@
 Summary: Enclosure LED Utilities
 Name: ledmon
 Version: 1.1.0
-Release: 2%{?dist}.1
+Release: 3%{?dist}
 License: GPLv2+
 URL: https://github.com/intel/ledmon
 Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -90,8 +90,11 @@ find %{buildroot} -name '*.la' -delete
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
-* Mon Jun 09 2025 Jan Macku <jamacku@redhat.com> - 1.1.0-2.1
-- Fix string2ibpi function (RHEL-104907)
+* Wed Jul 23 2025 Jan Macku <jamacku@redhat.com> - 1.1.0-3
+- Bump release (RHEL-95751)
+
+* Mon Jun 09 2025 Jan Macku <jamacku@redhat.com> - 1.1.0-2
+- Fix string2ibpi function (RHEL-95751)
 
 * Tue Nov 12 2024 Jan Macku <jamacku@redhat.com> - 1.1.0-1
 - update to 1.1.0
